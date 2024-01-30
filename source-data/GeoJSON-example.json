@@ -1,0 +1,64 @@
+var places = {
+        
+        "type": "FeatureCollection",
+        "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Title Two",
+        "description": "This is the description for item two.",
+        "url": "#",
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "circle"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.016960728738127,
+          52.05217894200172
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Title one",
+        "description": "This is the descrption for item one.",
+        "url": "#",
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "circle"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.4578770581381946,
+          53.071725913851054
+        ],
+        "type": "Point"
+      },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Title Three",
+        "description": "This is the description for item 3",
+        "url": "#",
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "circle"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.0984661270372555,
+          51.63770601636048
+        ],
+        "type": "Point"
+      },
+      "id": 2
+    }
+  ]
+
+};

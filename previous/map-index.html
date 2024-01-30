@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leaflet/OSM demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link rel="icon" href="favicon.png">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    <!--styles-->
+    <style>
+        #map { height: 600px;border:solid 1px black; }
+    </style>
+</head>
+<body>
+   <div id="map"></div>
+
+    <script>
+        //inital view
+        var map = L.map('map').setView([53.043041, -2.992494], 8);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        //markers
+        var marker = L.marker([52.969215000000, -3.17]).addTo(map);
+        var marker2 = L.marker([52.271, -3.337]).addTo(map);
+        var marker3 = L.marker([53.000, -3.8]).addTo(map);
+
+        //pop ups
+        marker.bindPopup("<b>Title.</b><br>Description.<br><br><a href=''>I am a link</a>.").openPopup();
+        marker2.bindPopup("<b>Title.</b><br>Description.<br><br><a href=''>I am a link</a>.").openPopup();
+        marker3.bindPopup("<b>Title</b><br>Description.<br><br><a href=''>I am a link</a>.").openPopup();
+
+    </script>
+
+</body>
+</html>
