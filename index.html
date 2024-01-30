@@ -7,13 +7,30 @@
   <meta name="description" content="" />
   <link rel="icon" href="favicon.png">
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+  <link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
 
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+  <link rel="stylesheet"
+    href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+    integrity="sha256-+bdWuWOXMFkX0v9Cvr3OWClPiYefDQz9GGZP/7xZxdc="
+    crossorigin="anonymous">
+
+  <link rel="stylesheet"
+    href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+    integrity="sha256-LWhzWaQGZRsWFrrJxg+6Zn8TT84k0/trtiHBc6qcGpY="
+    crossorigin="anonymous">
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
+    integrity="sha256-WL6HHfYfbFEkZOFdsJQeY7lJG/E5airjvqbznghUzRw="
+    crossorigin="anonymous"></script>
+
+
 
     <!--styles-->
     <style>
@@ -24,10 +41,48 @@
    <div id="map"></div>
 
    <!--get data-->
-    <script src="data/ohosmap.js"></script>
-    
+    <script src="data/ohosmap-all-unprocessed.js"></script>
+
     <script>
-        
+
+    var customIcon = L.icon({
+        iconUrl: './images/icon-red.svg',
+        iconSize: [31, 39],
+    });
+
+    var markers = L.markerClusterGroup();
+
+// Filter data to include only items with lat and lon
+var dataWithLatLon = rawData.data.filter(item => {
+  const details = item['@template'].details;
+  return details.lat && details.lon;
+});
+
+var dataWithoutLatLon = rawData.data.filter(item => {
+  const details = item['@template'].details;
+  return !details.lat && !details.lon;
+});
+
+var dataToGeoJson = {
+    type: 'FeatureCollection',
+    features: dataWithLatLon.map(item => {
+        const details = item['@template'].details;
+        return {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [details.lon, details.lat]
+            },
+            properties: {
+                title: details.title,
+                description: details.description,
+                itemURL: details.itemURL
+            }
+        }
+    })
+}
+
+
     //inital view
     var map = L.map('map').setView([53.043041, -2.992494], 7);
 
@@ -45,11 +100,22 @@
 
     //place makers and bind pop ups
 
-    var placesLeaflet = L.geoJSON(places, {
+    var placesLeaflet = L.geoJSON(dataToGeoJson, {
     onEachFeature: function (feature, layer) {
         layer.bindPopup('<h2>'+feature.properties.title+'</h2><p>'+feature.properties.description+'</p>Website: <a href=" '+feature.properties.itemURL+' ">Link</a>');
+    },
+    pointToLayer: function (feature, latlng) {
+      var marker = L.marker(latlng, {icon: customIcon});
+
+
+
+      markers.addLayer(marker);
+      return marker;
     }
-    }).addTo(map);
+    });
+
+
+    map.addLayer(markers);
 
 
     </script>
